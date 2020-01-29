@@ -4,6 +4,7 @@
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
 
+    <color name="lightBG">#0089CC</color>
     <color name="lightYellow">#ffffb3</color>
     <color name="medYellow">#ffdf80</color>
     <color name="darkYellow">#ffd24d</color>
