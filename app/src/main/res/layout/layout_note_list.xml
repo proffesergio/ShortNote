@@ -35,7 +35,7 @@
         android:layout_weight="20"
         android:id="@+id/note_timestamp"
         android:text="Jan 2020"
-        android:textSize="17sp"
+        android:textSize="20sp"
         android:textColor="@color/lightGrey"
         />
 
