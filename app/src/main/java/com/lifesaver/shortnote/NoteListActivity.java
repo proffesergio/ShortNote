@@ -14,7 +14,7 @@ import com.lifesaver.shortnote.utils.VerticalSpacingItemDecorator;
 
 import java.util.ArrayList;
 
-public class NoteListActivity extends AppCompatActivity {
+public class NoteListActivity extends AppCompatActivity implements NotesRecyclerAdapter.OnNoteListener {
 
     //Ui Components
     private RecyclerView mRecyclerView;
@@ -36,6 +36,7 @@ public class NoteListActivity extends AppCompatActivity {
         insertNotes();
 
         Toolbar mToolbar = ((Toolbar) findViewById(R.id.notes_toolbar));
+        setSupportActionBar(mToolbar);
         mToolbar.setTitle("Short Notes");
     }
 
@@ -59,9 +60,15 @@ public class NoteListActivity extends AppCompatActivity {
         VerticalSpacingItemDecorator itemDecorator = new VerticalSpacingItemDecorator(10);
         mRecyclerView.addItemDecoration(itemDecorator);
 
-        mNoteRecyclerAdapter = new NotesRecyclerAdapter(mNote);
+        mNoteRecyclerAdapter = new NotesRecyclerAdapter(mNote, (NotesRecyclerAdapter.OnNoteListener) this);
         mRecyclerView.setAdapter(mNoteRecyclerAdapter);
     }
 
 
+    @Override
+    public void onNoteClick(int position) {
+
+        Log.d("TAG", "onNoteClick: clicked at position " + position);
+
+    }
 }
