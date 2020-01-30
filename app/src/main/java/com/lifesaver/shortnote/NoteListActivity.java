@@ -1,6 +1,7 @@
 package com.lifesaver.shortnote;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -33,6 +34,9 @@ public class NoteListActivity extends AppCompatActivity {
         initRecyclerView();
 
         insertNotes();
+
+        Toolbar mToolbar = ((Toolbar) findViewById(R.id.notes_toolbar));
+        mToolbar.setTitle("Short Notes");
     }
 
     private void insertNotes() {
