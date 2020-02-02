@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -39,6 +40,7 @@ public class NoteListActivity extends AppCompatActivity implements NotesRecycler
         Toolbar mToolbar = ((Toolbar) findViewById(R.id.notes_toolbar));
         setSupportActionBar(mToolbar);
         mToolbar.setTitle("Short Notes");
+        mToolbar.setTitleTextColor(Color.WHITE);
     }
 
     private void insertNotes() {

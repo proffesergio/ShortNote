@@ -54,7 +54,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="85"
-        android:id="@+id/note_edit_text"
+        android:id="@+id/note_edit_title"
         android:text="Note Title Edit Text"
         android:textColor="@color/black"
         android:textSize="23sp"
