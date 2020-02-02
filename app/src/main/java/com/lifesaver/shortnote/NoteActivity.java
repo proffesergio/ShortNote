@@ -15,7 +15,8 @@ import android.widget.TextView;
 import com.lifesaver.shortnote.data_models.Note;
 
 public class NoteActivity extends AppCompatActivity implements
-        View.OnTouchListener, GestureDetector.OnGestureListener, GestureDetector.OnDoubleTapListener {
+        View.OnTouchListener, GestureDetector.OnGestureListener,
+        GestureDetector.OnDoubleTapListener, View.OnClickListener {
 
     private static final String TAG = "NoteActivity";
 
@@ -81,6 +82,9 @@ public class NoteActivity extends AppCompatActivity implements
 
     //method to detect gestures
     private void setTouchListeners() {
+        mViewTitle.setOnClickListener(this);
+        mCheck.setOnClickListener(this);
+
         mLinedEditText.setOnTouchListener(this);
         mGestureDetector = new GestureDetector(this, this);
     }
@@ -197,5 +201,24 @@ public class NoteActivity extends AppCompatActivity implements
         mEditTitle.setVisibility(View.GONE);
 
         mMode = EDIT_MODE_DISABLED;
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+
+            case R.id.toolbar_check: {
+                Log.d(TAG, "Clicked on CheckMark");
+                disableEditMode();
+                mViewTitle.requestFocus();
+                break;
+            }
+            case R.id.note_text_title: {
+                enableEditMode();
+                mEditTitle.requestFocus();
+                mEditTitle.setSelection(mEditTitle.length());
+                break;
+            }
+        }
     }
 }
