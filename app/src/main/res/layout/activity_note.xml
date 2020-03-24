@@ -31,7 +31,9 @@
         android:textColor="@color/black"
         android:text="Notepad"
         android:padding="5dp"
-        android:gravity="top"/>
+        android:gravity="top"
+        android:imeOptions="flagNoExtractUi"
+        />
 
 
 

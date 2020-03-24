@@ -1,5 +1,7 @@
 package com.lifesaver.shortnote;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
@@ -80,6 +82,7 @@ public class NoteActivity extends AppCompatActivity implements
         setListeners();
     }
 
+    //method to detect touch gestures
     private void setListeners() {
         mLinedEditText.setOnTouchListener(this);
         mGestureDetector = new GestureDetector(this, this);
@@ -87,15 +90,6 @@ public class NoteActivity extends AppCompatActivity implements
         mCheck.setOnClickListener(this);
         mBackArrow.setOnClickListener(this);
     }
-
-    //method to detect gestures
-//    private void setTouchListeners() {
-//        mViewTitle.setOnClickListener(this);
-//        mCheck.setOnClickListener(this);
-//
-//        mLinedEditText.setOnTouchListener(this);
-//        mGestureDetector = new GestureDetector(this, this);
-//    }
 
     //method to check if it is a new note or not
     private boolean getIncomingIntent() {
@@ -260,6 +254,31 @@ public class NoteActivity extends AppCompatActivity implements
                 finish();
                 break;
             }
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(mMode == EDIT_MODE_ENABLED) {
+            onClick(mCheck);
+        }
+        else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("mode", mMode);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        mMode = savedInstanceState.getInt("mode");
+        if(mMode == EDIT_MODE_ENABLED) {
+            enableEditMode();
         }
     }
 }
