@@ -30,5 +30,16 @@
         android:padding="5dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         />
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/add_note_fab"
+        android:layout_gravity="end|bottom"
+        android:src="@drawable/ic_note_add"
+        android:layout_margin="20dp"
+        app:fabSize="auto"
+        android:backgroundTint="@color/colorPrimaryDark"
+
+        />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
