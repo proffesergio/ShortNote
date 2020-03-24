@@ -2,11 +2,13 @@ package com.lifesaver.shortnote;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
@@ -72,22 +74,28 @@ public class NoteActivity extends AppCompatActivity implements
         else {
             //this is NOT a new note, goto VIEW_MODE
             setNoteProperties();
-
+            disableContentInteraction();
         }
         //calling setTouchListeners [GestureDetector]
-        setTouchListeners();
+        setListeners();
+    }
 
-
+    private void setListeners() {
+        mLinedEditText.setOnTouchListener(this);
+        mGestureDetector = new GestureDetector(this, this);
+        mViewTitle.setOnClickListener(this);
+        mCheck.setOnClickListener(this);
+        mBackArrow.setOnClickListener(this);
     }
 
     //method to detect gestures
-    private void setTouchListeners() {
-        mViewTitle.setOnClickListener(this);
-        mCheck.setOnClickListener(this);
-
-        mLinedEditText.setOnTouchListener(this);
-        mGestureDetector = new GestureDetector(this, this);
-    }
+//    private void setTouchListeners() {
+//        mViewTitle.setOnClickListener(this);
+//        mCheck.setOnClickListener(this);
+//
+//        mLinedEditText.setOnTouchListener(this);
+//        mGestureDetector = new GestureDetector(this, this);
+//    }
 
     //method to check if it is a new note or not
     private boolean getIncomingIntent() {
@@ -184,6 +192,21 @@ public class NoteActivity extends AppCompatActivity implements
         return false;
     }
 
+    private void disableContentInteraction() {
+        mLinedEditText.setKeyListener(null);
+        mLinedEditText.setFocusable(false);
+        mLinedEditText.setFocusableInTouchMode(false);
+        mLinedEditText.setCursorVisible(false);
+        mLinedEditText.clearFocus();
+    }
+    private void enableContentInteraction() {
+        mLinedEditText.setKeyListener(new EditText(this).getKeyListener());
+        mLinedEditText.setFocusable(true);
+        mLinedEditText.setFocusableInTouchMode(true);
+        mLinedEditText.setCursorVisible(true);
+        mLinedEditText.requestFocus();
+    }
+
     private void enableEditMode() {
         mBackArrowContainer.setVisibility(View.GONE);
         mCheckContainer.setVisibility(View.VISIBLE);
@@ -192,6 +215,8 @@ public class NoteActivity extends AppCompatActivity implements
         mEditTitle.setVisibility(View.VISIBLE);
 
         mMode = EDIT_MODE_ENABLED;
+
+        enableContentInteraction();
     }
     private void disableEditMode() {
         mBackArrowContainer.setVisibility(View.VISIBLE);
@@ -201,6 +226,17 @@ public class NoteActivity extends AppCompatActivity implements
         mEditTitle.setVisibility(View.GONE);
 
         mMode = EDIT_MODE_DISABLED;
+        disableContentInteraction();
+        hideSoftKeyboard();
+    }
+
+    private void hideSoftKeyboard() {
+        InputMethodManager imm = (InputMethodManager) this.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        View view = this.getCurrentFocus();
+        if(view == null) {
+            view = new View(this);
+        }
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
     @Override
@@ -209,6 +245,7 @@ public class NoteActivity extends AppCompatActivity implements
 
             case R.id.toolbar_check: {
                 Log.d(TAG, "Clicked on CheckMark");
+                hideSoftKeyboard();
                 disableEditMode();
                 mViewTitle.requestFocus();
                 break;
@@ -217,6 +254,10 @@ public class NoteActivity extends AppCompatActivity implements
                 enableEditMode();
                 mEditTitle.requestFocus();
                 mEditTitle.setSelection(mEditTitle.length());
+                break;
+            }
+            case R.id.toolbar_arrow: {
+                finish();
                 break;
             }
         }
