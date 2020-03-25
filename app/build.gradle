@@ -33,4 +33,9 @@ dependencies {
     //Design Support Library for the Toolbar
     implementation 'com.google.android.material:material:1.0.0'
 
+    def room_version = "2.2.5"
+
+    implementation "androidx.room:room-runtime:$room_version"
+    annotationProcessor "androidx.room:room-compiler:$room_version"
+
 }

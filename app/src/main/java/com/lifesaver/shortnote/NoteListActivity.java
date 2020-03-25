@@ -3,6 +3,7 @@ package com.lifesaver.shortnote;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,9 +17,11 @@ import android.view.View;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.lifesaver.shortnote.adapters.NotesRecyclerAdapter;
 import com.lifesaver.shortnote.data_models.Note;
+import com.lifesaver.shortnote.room_persistence.NoteRepository;
 import com.lifesaver.shortnote.utils.VerticalSpacingItemDecorator;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class NoteListActivity extends AppCompatActivity implements NotesRecyclerAdapter.OnNoteListener,
         View.OnClickListener {
@@ -30,6 +33,7 @@ public class NoteListActivity extends AppCompatActivity implements NotesRecycler
     //vars
     private ArrayList<Note> mNote = new ArrayList<>();
     private NotesRecyclerAdapter mNoteRecyclerAdapter;
+    private NoteRepository mNoteRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,15 +42,33 @@ public class NoteListActivity extends AppCompatActivity implements NotesRecycler
 
         mRecyclerView = findViewById(R.id.recyclerView);
         findViewById(R.id.add_note_fab).setOnClickListener(this);
+        mNoteRepository = new NoteRepository(this);
 
         initRecyclerView();
-
-        insertNotes();
+        retrieveNotes();
+//        insertNotes();
 
         Toolbar mToolbar = ((Toolbar) findViewById(R.id.notes_toolbar));
         setSupportActionBar(mToolbar);
         mToolbar.setTitle("Short Notes");
         mToolbar.setTitleTextColor(Color.WHITE);
+    }
+
+    private void retrieveNotes() {
+        //observer to observe data changes on LiveData object
+        mNoteRepository.retrieveNotesTask().observe(this, new Observer<List<Note>>() {
+            @Override
+            public void onChanged(List<Note> notes) {
+                //any changes on LiveData object, will trigger this onChanged method
+                if(mNote.size() > 0) {
+                    mNote.clear();
+                }
+                if(notes != null) {
+                    mNote.addAll(notes);
+                }
+                mNoteRecyclerAdapter.notifyDataSetChanged();
+            }
+        });
     }
 
     private void insertNotes() {
@@ -96,6 +118,8 @@ public class NoteListActivity extends AppCompatActivity implements NotesRecycler
     private void deleteNote(Note note) {
         mNote.remove(note);
         mNoteRecyclerAdapter.notifyDataSetChanged();;
+
+        mNoteRepository.deleteNote(note);
     }
 
     private ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {
