@@ -29,15 +29,17 @@
         android:layout_height="match_parent"
         android:layout_weight="3"
         />
+
     <TextView
+        android:id="@+id/note_timestamp"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="20"
-        android:id="@+id/note_timestamp"
+        android:fontFamily="sans-serif-condensed-light"
         android:text="Jan 2020"
-        android:textSize="20sp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
         android:textColor="@color/lightGrey"
-        />
+        android:textSize="20sp" />
 
 
 </LinearLayout>
